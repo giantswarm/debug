@@ -10,8 +10,7 @@ This project aims to:
 
 1.  **Standardize Debugging Setup:** Provide a consistent way to configure development environments (like Cursor or VS Code Insiders) to interact with Giant Swarm infrastructure using AI agents.
 2.  **Simplify Cluster Access:** Leverage the `envctl` tool to automate connecting to management and workload clusters, including Teleport login, `kubectl` context switching, and Prometheus port-forwarding.
-3.  **Share Best Practices:** Centralize the configuration for recommended MCP servers.
-4.  **Enable Conversation Sharing (Future):** Facilitate knowledge sharing by providing a mechanism to store and retrieve debugging conversations with the AI agent.
+3.  **Share Best Practices:** Centralize the configuration for recommended MCP servers and provide guides on their effective use.
 
 ## Target Audience
 
@@ -28,124 +27,40 @@ This project aims to:
 
 *   **Model Context Protocol (MCP):** A protocol enabling AI agents/models to interact with local development tools and environments. ([Official Docs](https://modelcontextprotocol.io/))
 *   **MCP Clients:** IDEs or tools that host the AI agent and connect to MCP Servers (Tested: [Cursor](https://cursor.sh/), VS Code Insiders with relevant extensions).
-*   **MCP Servers:** Backend services that expose specific tools or data sources via MCP. We currently use:
-    *   **Kubernetes:** `mcp-server-kubernetes` ([GitHub](https://github.com/Flux159/mcp-server-kubernetes)) - Provides access to `kubectl` functionality.
-    *   **Prometheus:** `prometheus-mcp-server` ([GitHub](https://github.com/pab1it0/prometheus-mcp-server)) - Provides access to Prometheus/Mimir metrics.
+*   **MCP Servers:** Backend services that expose specific tools or data sources via MCP. See [`docs/mcp-tools-overview.md`](docs/mcp-tools-overview.md) for details.
 *   **`envctl`:** A command-line tool to simplify connecting your environment to Giant Swarm clusters. ([GitHub](https://github.com/giantswarm/envctl))
-*   **Conversation History (Future):** A planned feature to store and search past debugging interactions.
+*   **Configuration Files:**
+    *   `mcp.json`: Configuration for the MCP Servers used by the client.
+    *   `.vscode/`: Recommended VS Code extensions and settings.
 
-## Prerequisites
+## Getting Started
 
-1.  **`kubectl`:** The Kubernetes command-line tool.
-2.  **Teleport Client (`tsh`):** Installed and logged into the Giant Swarm Teleport proxy (`teleport.giantswarm.io`).
-3.  **Go:** Version 1.21+ (Required to build `envctl` if not downloading the binary). ([Installation Guide](https://go.dev/doc/install))
-4.  **MCP Client:** Cursor or VS Code Insiders.
-5.  **(For Prometheus MCP Server):** Python environment manager like `uv` or `pip` + `venv`.
-
-## Setup Instructions
-
-1.  **Install `envctl`:**
-    *   **Option A: Download Release Binary (Recommended):**
-        Download the appropriate binary for your OS/Architecture from the [`envctl` Releases page](https://github.com/giantswarm/envctl/releases/latest). Make it executable (`chmod +x envctl`) and move it to a directory in your `$PATH` (e.g., `/usr/local/bin`).
-        ```bash
-        # Example for Linux AMD64
-        curl -L https://github.com/giantswarm/envctl/releases/latest/download/envctl-linux-amd64 -o envctl
-        chmod +x envctl
-        sudo mv envctl /usr/local/bin/ # Or another directory in your PATH
-        ```
-    *   **Option B: Build from Source:**
-        ```bash
-        git clone https://github.com/giantswarm/envctl.git
-        cd envctl
-        go build -o envctl .
-        sudo mv envctl /usr/local/bin/ # Or another directory in your PATH
-        ```
-    *   **(Optional but Recommended) Setup `envctl` Shell Completion:** Follow the instructions in the [`envctl` README](https://github.com/giantswarm/envctl#shell-completion-%F0%9F%A7%A0).
-
-2.  **Install MCP Servers:**
-    *   **Kubernetes (`mcp-server-kubernetes`):**
-        ```bash
-        npm install -g mcp-server-kubernetes
-        # Or using npx (no global install needed, used in example config)
-        ```
-    *   **Prometheus (`prometheus-mcp-server`):**
-        ```bash
-        # Clone the repository
-        git clone https://github.com/pab1it0/prometheus-mcp-server.git
-        cd prometheus-mcp-server
-
-        # Setup a virtual environment (example using uv)
-        uv venv
-        source .venv/bin/activate # Or .\venv\Scripts\activate on Windows
-        uv pip install -r requirements.txt
-
-        # Keep note of the path to the cloned directory and the run command
-        # e.g., /path/to/prometheus-mcp-server and uv run src/prometheus_mcp_server/main.py
-        ```
-
-3.  **Configure MCP Client (Cursor Example):**
-    *   Open your MCP configuration file (e.g., `~/.cursor/mcp.json` or via IDE settings).
-    *   Add or modify the `mcpServers` section to include the Kubernetes and Prometheus servers. **Adjust paths and commands** based on your installation method from Step 2.
-
-    ```json
-    {
-      "mcpServers": {
-        "kubernetes": {
-          "command": "npx", // Assumes npx is in PATH
-          "args": ["mcp-server-kubernetes"]
-        },
-        "prometheus": {
-          // Adjust command and args based on your setup
-          "command": "uv", // Or python, pipenv, poetry, etc.
-          "args": [
-            "--directory",
-            "/path/to/your/prometheus-mcp-server", // <--- UPDATE THIS PATH
-            "run",
-            "src/prometheus_mcp_server/main.py"
-          ],
-          "env": {
-            // envctl sets up port-forwarding to localhost:8080
-            "PROMETHEUS_URL": "http://localhost:8080/prometheus",
-            // Optional: Set Org ID if required by your Mimir setup
-            "ORG_ID": "giantswarm" 
-          }
-        }
-        // Add other MCP servers if needed
-      }
-    }
-    ```
-    *   **Important:** Replace `/path/to/your/prometheus-mcp-server` with the actual path where you cloned the Prometheus MCP server repository.
-
-4.  **Restart MCP Client/Servers:** Restart your IDE (Cursor/VS Code) or manually restart the MCP servers if they were running independently to ensure they pick up the new configuration.
+1.  **Prerequisites:** Ensure you have `kubectl`, `tsh` (logged in), `go`, `node`/`npm`, and `python`/`uv` installed. See the [Detailed Setup Guide](docs/setup-guide.md) for links and verification steps.
+2.  **Run Validation Script (Optional):** Clone this repository and run `./scripts/validate-setup.sh` to check your environment.
+3.  **Follow Setup:** Complete the steps in the [Detailed Setup Guide](docs/setup-guide.md) to install `envctl`, MCP servers, and configure your MCP client.
+    *   **CRITICAL:** Remember to update the placeholder path in `mcp.json` for the `prometheus-mcp-server` after cloning it!
+4.  **Explore Usage:** Check the [Usage Examples & Workflows](docs/usage-examples.md) and [Prompting Best Practices](docs/prompting-guide.md).
 
 ## Usage
 
 1.  **Connect to a Cluster:** Open your terminal and use `envctl connect`.
-    *   **Connect to MC only:**
-        ```bash
-        envctl connect <management-cluster-name>
-        # Example: envctl connect wallaby
-        ```
-        This logs into the MC via `tsh`, sets the `kubectl` context, and starts Prometheus port-forwarding in the background (to `http://localhost:8080/prometheus`).
-    *   **Connect to MC and WC:**
-        ```bash
-        envctl connect <management-cluster-name> <workload-cluster-shortname>
-        # Example: envctl connect wallaby plant-lille-prod
-        ```
-        This logs into both the MC and the *full* WC via `tsh`, sets the `kubectl` context to the WC, and starts Prometheus port-forwarding (via the MC context) in the background.
+    *   **Connect to MC only:** `envctl connect <management-cluster-name>`
+    *   **Connect to MC and WC:** `envctl connect <management-cluster-name> <workload-cluster-shortname>`
+2.  **Interact via MCP Client:** Open your MCP client (Cursor/VS Code) and start interacting with your AI agent, providing clear context as outlined in the prompting guide.
+3.  **Switching Clusters:** Run `envctl connect` again for the new target cluster(s). You might need to restart your MCP client or manually signal the MCP servers to refresh their context.
 
-2.  **Interact via MCP Client:** Open your MCP client (Cursor/VS Code) and start interacting with your AI agent. It should now have access to:
-    *   The Kubernetes cluster specified by the `kubectl` context set by `envctl`.
-    *   Prometheus metrics via `http://localhost:8080/prometheus`.
+## Troubleshooting & Nuances
 
-3.  **Switching Clusters:** Simply run `envctl connect` again with the desired cluster names. You might need to signal your MCP client/servers to refresh their context if they don't detect the change automatically (restarting the IDE is often the easiest way).
-
-## Conversation Sharing (Planned)
-
-Details TBD. The goal is to implement a simple mechanism (e.g., storing conversations in a shared location or a dedicated tool) to allow engineers to review and learn from past debugging sessions.
+*   **MCP Server Restarts:** After running `envctl connect` (especially if switching contexts), you might need to restart the MCP servers in your client (e.g., using the Stop/Start buttons in VS Code's Copilot Chat panel) for them to pick up the new `kubectl` context or Prometheus port-forward.
+*   **Agent Context Confusion:** Newer Kubernetes MCP servers might ask for clarification if multiple `kubectl` contexts are available. Guide the agent by saying `Use the current default context` or specifying the exact context name set by `envctl`.
+*   **MCP Tool vs. Terminal:** The agent might default to raw `kubectl` commands. If you want the structured benefits of MCP, explicitly ask it to use the specific MCP tool (e.g., `use the 'list_pods' MCP tool`). See [`docs/mcp-tools-overview.md`](docs/mcp-tools-overview.md).
 
 ## Further Reading & Resources
 
+*   [Detailed Setup Guide](docs/setup-guide.md)
+*   [Usage Examples & Workflows](docs/usage-examples.md)
+*   [Prompting Best Practices](docs/prompting-guide.md)
+*   [MCP Tools Overview](docs/mcp-tools-overview.md)
 *   [Model Context Protocol (MCP) Documentation](https://modelcontextprotocol.io/)
 *   [MCP Debugging Guide](https://modelcontextprotocol.io/docs/tools/debugging)
 *   [`envctl` Repository](https://github.com/giantswarm/envctl)
@@ -154,4 +69,6 @@ Details TBD. The goal is to implement a simple mechanism (e.g., storing conversa
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or Pull Request if you have suggestions, bug fixes, or want to add support for more MCP servers or features. 
+Contributions are welcome! Please see the [Contribution Guidelines](CONTRIBUTING.md) and open an issue or Pull Request.
+
+*Discuss setup issues or share experiences in the `#sig-architecture` Slack channel (or other relevant channels).* 
