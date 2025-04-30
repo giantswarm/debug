@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "kubernetes": {
+      "command": "npx", 
+      "args": ["mcp-server-kubernetes"]
+    },
+    "prometheus": {
+      "command": "uv", 
+      "args": [
+        "--directory",
+        "/path/to/your/prometheus-mcp-server",
+        "run",
+        "src/prometheus_mcp_server/main.py"
+      ],
+      "env": {
+        "PROMETHEUS_URL": "http://localhost:8080/prometheus",
+        "ORG_ID": "giantswarm"
+      }
+    }
+  }
+} 
