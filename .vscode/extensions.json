@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    "GitHub.copilot-chat" // Essential for the AI Agent interaction
+    // Add other useful extensions here, e.g., Kubernetes, YAML, Python, Go
+  ]
+} 

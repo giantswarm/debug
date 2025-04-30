@@ -8,7 +8,7 @@
       "command": "uv", 
       "args": [
         "--directory",
-        "/path/to/your/prometheus-mcp-server",
+        "/path/to/your/prometheus-mcp-server", // IMPORTANT: Replace with the actual path after cloning!
         "run",
         "src/prometheus_mcp_server/main.py"
       ],
@@ -17,5 +17,17 @@
         "ORG_ID": "giantswarm"
       }
     }
+    // Optional: To enable Brave Search, add a comma above and uncomment the section below.
+    // See README.md for details on installing the server and getting an API key.
+    /*
+    , 
+    "brave-search": {
+      "command": "npx", 
+      "args": ["mcp-server-brave-search"],
+      "env": {
+        "BRAVE_SEARCH_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+    */
   }
 } 
