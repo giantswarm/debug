@@ -62,7 +62,7 @@ Example `mpc.json`:
       "command": "uv",
       "args": [
         "--directory",
-        "/home/teemow/projects/prometheus-mcp-server",
+        "/your/path/to/prometheus-mcp-server",
         "run",
         "src/prometheus_mcp_server/main.py"
       ],
