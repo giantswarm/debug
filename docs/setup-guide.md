@@ -49,11 +49,37 @@ This guide provides detailed steps for setting up the prerequisites and componen
     echo "Prometheus MCP Server Path: $PROMETHEUS_MCP_PATH"
     ```
 4.  **Configure MCP Client (`mcp.json`):**
+
+Example `mpc.json`:
+```
+{
+  "mcpServers": {
+    "kubernetes": {
+      "command": "npx",
+      "args": ["mcp-server-kubernetes"]
+    },
+    "prometheus": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/your/path/to/prometheus-mcp-server",
+        "run",
+        "src/prometheus_mcp_server/main.py"
+      ],
+      "env": {
+        "PROMETHEUS_URL": "http://localhost:8080/prometheus",
+        "ORG_ID": "giantswarm"
+      }
+    }
+  }
+}
+```
+
     *   Locate your MCP client's configuration file (e.g., `~/.cursor/mcp.json`, VS Code settings, or the `mcp.json` file in *this* repository if using workspace settings).
     *   Copy the contents of the `mcp.json` file from this repository into your client's configuration.
     *   **CRITICAL:** Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
     *   *(Optional)* If you want web search, uncomment the `brave-search` section, ensure the server is installed (`npm install -g mcp-server-brave-search`), get an API key, and replace the placeholder key.
 
-5.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server configurations.
+6.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server configurations.
 
 Setup is complete. Proceed to the Usage Examples guide. 
