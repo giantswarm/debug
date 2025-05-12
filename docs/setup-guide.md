@@ -1,56 +1,61 @@
 # Detailed Setup Guide
 
-This guide provides detailed steps for setting up the prerequisites and components needed for the Giant Swarm debugging environment.
+This guide provides detailed steps for setting up the prerequisites and components needed for the Giant Swarm
+debugging environment.
 
 ## Prerequisites Installation
 
-*   **kubectl:** [Official Installation Guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-*   **Teleport Client (tsh):** [Giant Swarm Internal Docs](https://intranet.giantswarm.io/docs/support-and-ops/teleport/#installing-teleport) (or relevant public docs if available)
-*   **Go (1.21+):** [Official Installation Guide](https://go.dev/doc/install)
-*   **Node.js/npm/npx:** Needed for `mcp-server-kubernetes`. [Download Page](https://nodejs.org/)
-*   **Python & uv (or pip/venv):** Needed for `prometheus-mcp-server`. 
-    *   Install Python: [Python Downloads](https://www.python.org/downloads/)
-    *   Install uv: `pip install uv` or follow [uv Installation Guide](https://github.com/astral-sh/uv#installation)
+- **kubectl:** [Official Installation Guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- **Teleport Client (tsh):**
+  [Giant Swarm Internal Docs](https://intranet.giantswarm.io/docs/support-and-ops/teleport/#installing-teleport)
+  (or relevant public docs if available)
+- **Go (1.21+):** [Official Installation Guide](https://go.dev/doc/install)
+- **Node.js/npm/npx:** Needed for `mcp-server-kubernetes`. [Download Page](https://nodejs.org/)
+- **Python & uv (or pip/venv):** Needed for `prometheus-mcp-server`.
+  - Install Python: [Python Downloads](https://www.python.org/downloads/)
+  - Install uv: `pip install uv` or follow
+    [uv Installation Guide](https://github.com/astral-sh/uv#installation)
 
-*Verify installations by running `kubectl version --client`, `tsh version`, `go version`, `node -v`, `npm -v`, `python --version`, `uv --version`.*
+_Verify installations by running `kubectl version --client`, `tsh version`, `go version`, `node -v`, `npm -v`,
+`python --version`, `uv --version`._
 
 ## Component Setup
 
 1.  **Install `envctl`:** (Refer to main README for detailed steps - Download binary or build from source)
 2.  **Install `mcp-server-kubernetes`:**
     ```bash
-    npm install -g mcp-server-kubernetes
+    # local install, doesn't need root; for global install, use -g
+    npm install mcp-server-kubernetes
     ```
-    *Alternatively, rely on `npx` as configured in `mcp.json`, which downloads and runs it temporarily.*
+    _Alternatively, rely on `npx` as configured in `mcp.json`, which downloads and runs it temporarily._
 3.  **Install `prometheus-mcp-server`:**
+
     ```bash
     # Choose a location for helper repositories, e.g., ~/dev/giantswarm-helpers
     HELPERS_DIR="~/dev/giantswarm-helpers"
     mkdir -p "$HELPERS_DIR"
     cd "$HELPERS_DIR"
-    
+
     # Clone the repository
     git clone https://github.com/pab1it0/prometheus-mcp-server.git
     cd prometheus-mcp-server
 
-    # Setup Python virtual environment using uv
-    uv venv 
-    source .venv/bin/activate # (Use .\venv\Scripts\activate on Windows/PowerShell)
-    
-    # Install dependencies
-    uv pip install -r requirements.txt
-    
-    # Deactivate environment (it will be activated by the MCP config)
-    deactivate
-    
+    # if you don't have a recent/valid python environment, run
+    uv python install
+
+    # Setup Python virtual environment using uv and install
+    uv sync
+
     # IMPORTANT: Note the full path to this directory!
     # Example: /home/user/dev/giantswarm-helpers/prometheus-mcp-server
     PROMETHEUS_MCP_PATH=$(pwd)
     echo "Prometheus MCP Server Path: $PROMETHEUS_MCP_PATH"
     ```
+
 4.  **Configure MCP Client (`mcp.json`):**
 
 Example `mpc.json`:
+
 ```
 {
   "mcpServers": {
@@ -80,6 +85,7 @@ Example `mpc.json`:
     *   **CRITICAL:** Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
     *   *(Optional)* If you want web search, uncomment the `brave-search` section, ensure the server is installed (`npm install -g mcp-server-brave-search`), get an API key, and replace the placeholder key.
 
-6.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server configurations.
+6.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server
+    configurations.
 
-Setup is complete. Proceed to the Usage Examples guide. 
+Setup is complete. Proceed to the Usage Examples guide.
