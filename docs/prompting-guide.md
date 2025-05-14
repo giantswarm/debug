@@ -1,5 +1,9 @@
 # Prompt Engineering Best Practices
 
+Before diving into specific prompting techniques, it's important to understand that the AI assistant you are interacting with in this environment has already been pre-configured with a set of "system prompts" or custom instructions. These instructions define its persona as an experienced Giant Swarm SRE, provide it with core knowledge about Giant Swarm's platform, and set guidelines for its behavior. This initial configuration is managed by the `scripts/update_instructions.sh` script, which ensures consistency across different tools (like Cursor and VS Code with GitHub Copilot). For more details on what these system prompts contain and how they are managed, please refer to the [Utility Scripts Documentation](utility-scripts.md).
+
+The best practices below will help you leverage this pre-configured AI more effectively for your debugging and operational tasks.
+
 Effective interaction with the AI agent relies on providing clear context and guidance. Here are some best practices when using this debugging environment:
 
 1.  **Establish Context Clearly:**
