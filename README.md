@@ -55,6 +55,12 @@ This project aims to:
 *   **Agent Context Confusion:** Newer Kubernetes MCP servers might ask for clarification if multiple `kubectl` contexts are available. Guide the agent by saying `Use the current default context` or specifying the exact context name set by `envctl`.
 *   **MCP Tool vs. Terminal:** The agent might default to raw `kubectl` commands. If you want the structured benefits of MCP, explicitly ask it to use the specific MCP tool (e.g., `use the 'list_pods' MCP tool`). See [`docs/mcp-tools-overview.md`](docs/mcp-tools-overview.md).
 
+## Utility Scripts
+
+This repository includes utility scripts to help with common tasks. For more details, see the [Utility Scripts Documentation](docs/utility-scripts.md).
+
+*   `scripts/update_instructions.sh`: Updates AI instruction files from a central source.
+
 ## Further Reading & Resources
 
 *   [Detailed Setup Guide](docs/setup-guide.md)
@@ -71,4 +77,4 @@ This project aims to:
 
 Contributions are welcome! Please see the [Contribution Guidelines](CONTRIBUTING.md) and open an issue or Pull Request.
 
-*Discuss setup issues or share experiences in the `#sig-architecture` Slack channel (or other relevant channels).* 
+*Discuss setup issues or share experiences in the `#sig-architecture` Slack channel (or other relevant channels).*
