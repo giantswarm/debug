@@ -35,4 +35,4 @@ echo "Updating $DEST_GITHUB_COPILOT..."
 cp "$SOURCE_FILE" "$DEST_GITHUB_COPILOT"
 echo "Updated $DEST_GITHUB_COPILOT"
 
-echo "Script finished." 
+echo "Script finished."

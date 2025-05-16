@@ -77,4 +77,4 @@ This repository includes utility scripts to help with common tasks. For more det
 
 Contributions are welcome! Please see the [Contribution Guidelines](CONTRIBUTING.md) and open an issue or Pull Request.
 
-*Discuss setup issues or share experiences in the `#sig-architecture` Slack channel (or other relevant channels).* 
+*Discuss setup issues or share experiences in the `#sig-architecture` Slack channel (or other relevant channels).*

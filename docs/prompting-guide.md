@@ -36,4 +36,4 @@ Effective interaction with the AI agent relies on providing clear context and gu
 7.  **Handle Context Ambiguity:**
     *   As Timo noted, newer MCP servers might explicitly ask for the context if multiple are loaded. If `envctl` sets the desired context, you can usually tell the agent: `Please use the current default kubectl context.` or `Use the '{cluster-context-name}' context.`
 
-By following these practices, you can make your interactions with the AI agent more efficient, accurate, and safe. 
+By following these practices, you can make your interactions with the AI agent more efficient, accurate, and safe.
