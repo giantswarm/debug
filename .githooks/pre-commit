@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Get the list of staged files that are Added, Copied, or Modified
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+# Define the target file and script
+TARGET_FILE="system-prompt-gs-sre.md"
+SCRIPT_TO_RUN="./scripts/update-instructions.sh"
+
+# Check if the target file is among the staged files
+if echo "$STAGED_FILES" | grep -qE "^${TARGET_FILE}$"; then
+  echo "Detected change in ${TARGET_FILE}. Running ${SCRIPT_TO_RUN}..."
+  
+  # Run the script
+  if ! ${SCRIPT_TO_RUN}; then
+    echo "Error: ${SCRIPT_TO_RUN} failed. Aborting commit."
+    exit 1
+  fi
+  
+  # Re-stage the target file as the script might have modified it.
+  # If update-instructions.sh modifies other files that should be part of this commit,
+  # add them here as well. For example:
+  # git add path/to/other/modified/file.md
+  echo "Re-staging ${TARGET_FILE}..."
+  git add "${TARGET_FILE}"
+  git add ".cursor/rules"
+  git add ".github/copilot-instructions.md"
+  
+  # If your script `scripts/update-instructions.sh` creates new files that need to be committed,
+  # you should add `git add <new_file_path>` for each of them here.
+
+  echo "${SCRIPT_TO_RUN} executed successfully and relevant files staged."
+else
+  # For debugging: echo "No changes detected in ${TARGET_FILE} among staged files: $STAGED_FILES"
+  echo "No changes to ${TARGET_FILE} in this commit. Proceeding."
+fi
+
+exit 0 
