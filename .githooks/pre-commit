@@ -5,7 +5,7 @@ STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 
 # Define the target file and script
 TARGET_FILE="system-prompt-gs-sre.md"
-SCRIPT_TO_RUN="./scripts/update-instructions.sh"
+SCRIPT_TO_RUN="./scripts/update_instructions.sh"
 
 # Check if the target file is among the staged files
 if echo "$STAGED_FILES" | grep -qE "^${TARGET_FILE}$"; then
