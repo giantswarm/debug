@@ -32,7 +32,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
     ```bash
     # Choose a location for helper repositories, e.g., ~/dev/giantswarm-helpers
-    HELPERS_DIR="~/dev/giantswarm-helpers"
+    HELPERS_DIR=~/dev/giantswarm-helpers
     mkdir -p "$HELPERS_DIR"
     cd "$HELPERS_DIR"
 
@@ -48,7 +48,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
     # IMPORTANT: Note the full path to this directory!
     # Example: /home/user/dev/giantswarm-helpers/prometheus-mcp-server
-    PROMETHEUS_MCP_PATH=$(pwd)
+    PROMETHEUS_MCP_PATH="$(pwd)"
     echo "Prometheus MCP Server Path: $PROMETHEUS_MCP_PATH"
     ```
 
