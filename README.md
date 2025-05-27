@@ -37,7 +37,7 @@ This project aims to:
 
 1.  **Prerequisites:** Ensure you have `kubectl`, `tsh` (logged in), `go`, `node`/`npm`, and `python`/`uv` installed. See the [Detailed Setup Guide](docs/setup-guide.md) for links and verification steps.
 2.  **Run Validation Script (Optional):** Clone this repository and run `./scripts/validate-setup.sh` to check your environment.
-3.  **Follow Setup:** Complete the steps in the [Detailed Setup Guide](docs/setup-guide.md) to install `envctl`, MCP servers, and configure your MCP client.
+3.  **Follow Setup:** Complete the steps in the [Detailed Setup Guide](docs/setup-guide.md) to install [`envctl`](https://github.com/giantswarm/envctl), MCP servers, and configure your MCP client.
     *   **CRITICAL:** Remember to update the placeholder path in `mcp.json` for the `prometheus-mcp-server` after cloning it!
 4.  **Explore Usage:** Check the [Usage Examples & Workflows](docs/usage-examples.md) and [Prompting Best Practices](docs/prompting-guide.md).
 
