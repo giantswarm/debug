@@ -21,7 +21,8 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
 ## Component Setup
 
-1.  **Install [`envctl`](https://github.com/giantswarm/envctl):** (Refer to main README for detailed steps - Download binary or build from source)
+1.  **Install [`envctl`](https://github.com/giantswarm/envctl):** (Refer to main README for detailed steps -
+    Download binary or build from source)
 2.  **Install `mcp-server-kubernetes`:**
     ```bash
     # local install, doesn't need root; for global install, use -g
@@ -53,15 +54,26 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
     ```
 
 4.  **Install `mcp-grafana`:**
-    *   **Prerequisite:** Create a service account in your Grafana instance with the necessary permissions for the tools you intend to use. Generate a service account token and keep it handy. Refer to the [official Grafana documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/) for details.
-    *   **Installation Options:**
-        *   **Download Binary:** Download the latest `mcp-grafana` release from the [official releases page](https://github.com/grafana/mcp-grafana/releases). Extract the binary and place it in a directory included in your system's `PATH` (e.g., `/usr/local/bin` or `~/bin`).
-        *   **(Alternative) Build from source:** If you have Go installed (see prerequisites), you can build and install it:
-            ```bash
-            go install github.com/grafana/mcp-grafana/cmd/mcp-grafana@latest
-            ```
+    - **Prerequisite:** Create a service account in your Grafana instance with the necessary permissions for
+      the tools you intend to use. Generate a service account token and keep it handy. Refer to the
+      [official Grafana documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/)
+      for details.
+    - **Installation Options:**
+      - **Download Binary:** Download the latest `mcp-grafana` release from the
+        [official releases page](https://github.com/grafana/mcp-grafana/releases). Extract the binary and
+        place it in a directory included in your system's `PATH` (e.g., `/usr/local/bin` or `~/bin`).
+      - **(Alternative) Build from source:** If you have Go installed (see prerequisites), you can build and
+        install it:
+        ```bash
+        go install github.com/grafana/mcp-grafana/cmd/mcp-grafana@latest
+        ```
+5.  Install `flux MCP server`
 
-5.  **Configure MCP Client (`mcp.json`):**
+    - follow official instructions to [install](https://fluxcd.control-plane.io/mcp/install/)
+    - the MCP server expects `flux-operator` to be present, but you can work around that adding to your prompt
+      that `flux-operator` is not used and flux is already deployed into `flux-giantswarm` namespace.
+
+6.  **Configure MCP Client (`mcp.json`):**
 
     Example `mpc.json`:
 
@@ -92,38 +104,48 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
             "GRAFANA_URL": "YOUR_GRAFANA_URL",
             "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
           }
-        }
+        },
+        "flux": {
+          "command": "flux-operator-mcp",
+          "args": ["serve"]
+        },
       }
     }
     ```
 
-    *   Locate your MCP client's configuration file (e.g., `~/.cursor/mcp.json`, VS Code settings, or the `mcp.json` file in *this* repository if using workspace settings).
-    *   Copy the contents of the `mcp.json` file from this repository into your client's configuration.
-    *   **CRITICAL:**
-        *   Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
-        *   For `grafana`, replace `YOUR_GRAFANA_URL` to point to your Grafana instance and `YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN` with the service account token you generated. If `mcp-grafana` is not in your PATH, provide the full path to the executable.
-    *   *(Alternative for `grafana` using Docker)* If you prefer to run `mcp-grafana` via Docker, your `grafana` configuration in `mcp.json` would look like this (ensure the `mcp/grafana` image is pulled):
-        ```json
-        // In mcp.json, under mcpServers:
-        "grafana": {
-          "command": "docker",
-          "args": [
-            "run",
-            "--rm",
-            "-p", "8000:8000", // Exposes mcp-grafana on host port 8000, internal is 8000. Adjust host port if needed.
-            "-e", "GRAFANA_URL",
-            "-e", "GRAFANA_API_KEY",
-            "mcp/grafana" // Optional: add "-debug" here after the image name
-          ],
-          "env": {
-            "GRAFANA_URL": "YOUR_GRAFANA_URL",
-            "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
-          }
+    - Locate your MCP client's configuration file (e.g., `~/.cursor/mcp.json`, VS Code settings, or the
+      `mcp.json` file in _this_ repository if using workspace settings).
+    - Copy the contents of the `mcp.json` file from this repository into your client's configuration.
+    - **CRITICAL:**
+      - Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous
+        step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
+      - For `grafana`, replace `YOUR_GRAFANA_URL` to point to your Grafana instance and
+        `YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN` with the service account token you generated. If `mcp-grafana` is
+        not in your PATH, provide the full path to the executable.
+    - _(Alternative for `grafana` using Docker)_ If you prefer to run `mcp-grafana` via Docker, your `grafana`
+      configuration in `mcp.json` would look like this (ensure the `mcp/grafana` image is pulled):
+      ```json
+      // In mcp.json, under mcpServers:
+      "grafana": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-p", "8000:8000", // Exposes mcp-grafana on host port 8000, internal is 8000. Adjust host port if needed.
+          "-e", "GRAFANA_URL",
+          "-e", "GRAFANA_API_KEY",
+          "mcp/grafana" // Optional: add "-debug" here after the image name
+        ],
+        "env": {
+          "GRAFANA_URL": "YOUR_GRAFANA_URL",
+          "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
         }
-        ```
-    *   *(Optional)* If you want web search, uncomment the `brave-search` section, ensure the server is installed (`npm install -g mcp-server-brave-search`), get an API key, and replace the placeholder key.
+      }
+      ```
+    - _(Optional)_ If you want web search, uncomment the `brave-search` section, ensure the server is
+      installed (`npm install -g mcp-server-brave-search`), get an API key, and replace the placeholder key.
 
-6.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server
+7.  **Restart MCP Client:** Restart your IDE (Cursor/VS Code) to ensure it loads the new MCP server
     configurations.
 
 Setup is complete. Proceed to the Usage Examples guide.
