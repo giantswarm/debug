@@ -25,7 +25,7 @@
       "args": [],
       "env": {
         "GRAFANA_URL": "http://localhost:3000",
-        "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
+        "GRAFANA_API_KEY": "YOUR_GRAFANA_SHAREDORG_SERVICE_ACCOUNT_TOKEN"
       }
     },
     "grafanaGiantswarm": {
@@ -33,7 +33,7 @@
       "args": [],
       "env": {
         "GRAFANA_URL": "http://localhost:3000",
-        "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
+        "GRAFANA_API_KEY": "YOUR_GRAFANA_GS_SERVICE_ACCOUNT_TOKEN"
       }
     }
     */
