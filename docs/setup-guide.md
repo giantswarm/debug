@@ -85,11 +85,19 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
             "ORG_ID": "giantswarm"
           }
         },
-        "grafana": {
+        "grafanaShared": {
           "command": "mcp-grafana",
           "args": [],
           "env": {
-            "GRAFANA_URL": "YOUR_GRAFANA_URL",
+            "GRAFANA_URL": "http://localhost:3000",
+            "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
+          }
+        },
+        "grafanaGiantswarm": {
+          "command": "mcp-grafana",
+          "args": [],
+          "env": {
+            "GRAFANA_URL": "http://localhost:3000",
             "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
           }
         }
@@ -102,6 +110,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
     *   **CRITICAL:**
         *   Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
         *   For `grafana`, replace `YOUR_GRAFANA_URL` to point to your Grafana instance and `YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN` with the service account token you generated. If `mcp-grafana` is not in your PATH, provide the full path to the executable.
+        * You can use [this script](https://github.com/giantswarm/atlas-hacks/blob/main/hack/bin/update-mcp-grafana-token.sh) to help with grafana token management.
     *   *(Alternative for `grafana` using Docker)* If you prefer to run `mcp-grafana` via Docker, your `grafana` configuration in `mcp.json` would look like this (ensure the `mcp/grafana` image is pulled):
         ```json
         // In mcp.json, under mcpServers:
