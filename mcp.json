@@ -20,11 +20,19 @@
     // Optional: To enable Grafana, add a comma above and uncomment the section below.
     // See README.md for details on installing the server and getting a service account token.
     /*
-    "grafana": {
+    "grafanaShared": {
       "command": "mcp-grafana",
       "args": [],
       "env": {
-        "GRAFANA_URL": "YOUR_GRAFANA_URL",
+        "GRAFANA_URL": "http://localhost:3000",
+        "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
+      }
+    },
+    "grafanaGiantswarm": {
+      "command": "mcp-grafana",
+      "args": [],
+      "env": {
+        "GRAFANA_URL": "http://localhost:3000",
         "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
       }
     }
