@@ -36,10 +36,12 @@ This project aims to:
 ## Getting Started
 
 1.  **Prerequisites:** Ensure you have `kubectl`, `tsh` (logged in), `go`, `node`/`npm`, and `python`/`uv` installed. See the [Detailed Setup Guide](docs/setup-guide.md) for links and verification steps.
-2.  **Run Validation Script (Optional):** Clone this repository and run `./scripts/validate-setup.sh` to check your environment.
-3.  **Follow Setup:** Complete the steps in the [Detailed Setup Guide](docs/setup-guide.md) to install `envctl`, MCP servers, and configure your MCP client.
+2.  **Clone this Repository:** `git clone <repository-url>` and `cd` into the directory.
+3.  **Configure Git Hooks (One-time):** Run `make setup` to configure Git to use the shared pre-commit hooks in this repository. This helps ensure important scripts are run automatically before commits.
+4.  **Run Validation Script (Optional):** Run `./scripts/validate-setup.sh` to check your environment.
+5.  **Follow Setup:** Complete the steps in the [Detailed Setup Guide](docs/setup-guide.md) to install `envctl`, MCP servers, and configure your MCP client.
     *   **CRITICAL:** Remember to update the placeholder path in `mcp.json` for the `prometheus-mcp-server` after cloning it!
-4.  **Explore Usage:** Check the [Usage Examples & Workflows](docs/usage-examples.md) and [Prompting Best Practices](docs/prompting-guide.md).
+6.  **Explore Usage:** Check the [Usage Examples & Workflows](docs/usage-examples.md) and [Prompting Best Practices](docs/prompting-guide.md).
 
 ## Usage
 
