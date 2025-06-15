@@ -3,6 +3,21 @@
 This guide provides detailed steps for setting up the prerequisites and components needed for the Giant Swarm
 debugging environment.
 
+## Initial Repository Setup
+
+Before proceeding with component installation, ensure you have cloned this repository.
+
+1.  **Clone the Repository:** If you haven't already, clone this repository to your local machine.
+    ```bash
+    git clone <repository-url> # Replace <repository-url> with the actual URL
+    cd <repository-name>       # Navigate into the cloned directory
+    ```
+2.  **Configure Git Hooks (Recommended):** This repository includes shared Git pre-commit hooks to help automate certain tasks and ensure consistency. To enable them, run the following command from the root of this repository:
+    ```bash
+    make setup
+    ```
+    This will configure your local Git repository to use the hooks located in the `.githooks` directory.
+
 ## Prerequisites Installation
 
 - **kubectl:** [Official Installation Guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
