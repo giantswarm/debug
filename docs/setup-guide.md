@@ -36,7 +36,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
 ## Component Setup
 
-1.  **Install `envctl`:** (Refer to main README for detailed steps - Download binary or build from source)
+1.  **Install [`envctl`](https://github.com/giantswarm/envctl):** (Refer to main README for detailed steps - Download binary or build from source)
 2.  **Install `mcp-server-kubernetes`:**
     ```bash
     # local install, doesn't need root; for global install, use -g
@@ -47,7 +47,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
     ```bash
     # Choose a location for helper repositories, e.g., ~/dev/giantswarm-helpers
-    HELPERS_DIR="~/dev/giantswarm-helpers"
+    HELPERS_DIR=~/dev/giantswarm-helpers
     mkdir -p "$HELPERS_DIR"
     cd "$HELPERS_DIR"
 
@@ -63,12 +63,12 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
     # IMPORTANT: Note the full path to this directory!
     # Example: /home/user/dev/giantswarm-helpers/prometheus-mcp-server
-    PROMETHEUS_MCP_PATH=$(pwd)
+    PROMETHEUS_MCP_PATH="$(pwd)"
     echo "Prometheus MCP Server Path: $PROMETHEUS_MCP_PATH"
     ```
 
 4.  **Install `mcp-grafana`:**
-    *   **Prerequisite:** Create a service account in your Grafana instance with the necessary permissions for the tools you intend to use. Generate a service account token and keep it handy. Refer to the [official Grafana documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/) for details.
+    *   **Prerequisite:** Create a service account in your Grafana instance/org with the necessary permissions for the tools you intend to use. Generate a service account token and keep it handy. Refer to the [official Grafana documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/) for details.
     *   **Installation Options:**
         *   **Download Binary:** Download the latest `mcp-grafana` release from the [official releases page](https://github.com/grafana/mcp-grafana/releases). Extract the binary and place it in a directory included in your system's `PATH` (e.g., `/usr/local/bin` or `~/bin`).
         *   **(Alternative) Build from source:** If you have Go installed (see prerequisites), you can build and install it:
@@ -100,12 +100,20 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
             "ORG_ID": "giantswarm"
           }
         },
-        "grafana": {
+        "grafanaShared": {
           "command": "mcp-grafana",
           "args": [],
           "env": {
-            "GRAFANA_URL": "YOUR_GRAFANA_URL",
-            "GRAFANA_API_KEY": "YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN"
+            "GRAFANA_URL": "http://localhost:3000",
+            "GRAFANA_API_KEY": "YOUR_GRAFANA_SHAREDORG_SERVICE_ACCOUNT_TOKEN"
+          }
+        },
+        "grafanaGiantswarm": {
+          "command": "mcp-grafana",
+          "args": [],
+          "env": {
+            "GRAFANA_URL": "http://localhost:3000",
+            "GRAFANA_API_KEY": "YOUR_GRAFANA_GS_SERVICE_ACCOUNT_TOKEN"
           }
         }
       }
@@ -116,7 +124,8 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
     *   Copy the contents of the `mcp.json` file from this repository into your client's configuration.
     *   **CRITICAL:**
         *   Update the placeholder path for `prometheus-mcp-server` with the actual path noted in the previous step (e.g., replace `/path/to/your/prometheus-mcp-server` with `$PROMETHEUS_MCP_PATH`).
-        *   For `grafana`, replace `YOUR_GRAFANA_URL` to point to your Grafana instance and `YOUR_GRAFANA_SERVICE_ACCOUNT_TOKEN` with the service account token you generated. If `mcp-grafana` is not in your PATH, provide the full path to the executable.
+        *   For `grafana`, replace `YOUR_GRAFANA_URL` to point to your Grafana instance and `YOUR_GRAFANA_XX_SERVICE_ACCOUNT_TOKEN` with the service account tokens you generated. If `mcp-grafana` is not in your PATH, provide the full path to the executable.
+        * You can use [this script](https://github.com/giantswarm/atlas-hacks/blob/main/hack/bin/update-mcp-grafana-token.sh) to help with grafana token management.
     *   *(Alternative for `grafana` using Docker)* If you prefer to run `mcp-grafana` via Docker, your `grafana` configuration in `mcp.json` would look like this (ensure the `mcp/grafana` image is pulled):
         ```json
         // In mcp.json, under mcpServers:
