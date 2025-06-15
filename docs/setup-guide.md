@@ -36,7 +36,7 @@ _Verify installations by running `kubectl version --client`, `tsh version`, `go 
 
 ## Component Setup
 
-1.  **Install [`envctl`](https://github.com/giantswarm/envctl):** (Refer to main README for detailed steps - Download binary or build from source)
+1.  **Install `envctl`:** (Refer to [README](https://github.com/giantswarm/envctl/blob/main/README.md) for detailed steps - Download binary or build from source)
 2.  **Install `mcp-server-kubernetes`:**
     ```bash
     # local install, doesn't need root; for global install, use -g
